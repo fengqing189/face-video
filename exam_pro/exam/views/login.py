@@ -33,7 +33,7 @@ class LoginView(View):
         :return:
         '''
         id_number = request.POST.get('id_number')
-        user_obj = models.User.objects.filter(id_number=id_number).first()
+        user_obj = models.Examinee.objects.filter(idCard=id_number).first()
         # if not user_obj:
         #     return render(request,'exam/login.html',{'error_msg':'身份证有误,请重试'})
 
