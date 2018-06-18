@@ -10,10 +10,12 @@
 
 
 from django.shortcuts import render,redirect,HttpResponse
-from rest_framework.views import APIView
+from django.views import View
+from exam import models
+# from rest_framework.views import APIView
 
 
-class LoginView(APIView):
+class LoginView(View):
 
 
     def get(self,request,*args,**kwargs):
@@ -30,6 +32,9 @@ class LoginView(APIView):
         :param kwargs:
         :return:
         '''
-
+        id_number = request.POST.get('id_number')
+        user_obj = models.User.objects.filter(id_number=id_number).first()
+        # if not user_obj:
+        #     return render(request,'exam/login.html',{'error_msg':'身份证有误,请重试'})
 
         return render(request,'exam/face_auth.html')

@@ -16,8 +16,11 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from exam.views import login
+from exam.views import save_img
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^login', login.LoginView.as_view()),
+    url(r'^img/info', save_img.SaveImg.as_view()),
 ]
