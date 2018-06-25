@@ -17,10 +17,15 @@ from django.conf.urls import url
 from django.contrib import admin
 from exam.views import login
 from exam.views import save_img
+from exam.views import register
+from exam.views import send_record
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^register', register.ExamRegister.as_view()),
     url(r'^login', login.LoginView.as_view()),
-    url(r'^img/info', save_img.SaveImg.as_view()),
+    url(r'^img/info', save_img.LoginSaveImg.as_view()),
+    url(r'^ai/recard', send_record.SendRecad.as_view()),
+
 ]

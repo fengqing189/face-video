@@ -20,8 +20,6 @@ class LoginView(View):
 
     def get(self,request,*args,**kwargs):
 
-
-
         return render(request,'exam/login.html')
 
     def post(self,request,*args,**kwargs):
@@ -34,7 +32,16 @@ class LoginView(View):
         '''
         id_number = request.POST.get('id_number')
         user_obj = models.Examinee.objects.filter(idCard=id_number).first()
-        # if not user_obj:
-        #     return render(request,'exam/login.html',{'error_msg':'身份证有误,请重试'})
+        if not user_obj:
+            return render(request,'exam/login.html',{'error_msg':'证件输入有误,请重试'})
 
-        return render(request,'exam/face_auth.html')
+        # 确认考生在数据库之后，就把考生证件的路径，放到recard表中，并且is_login=1
+        if request.META.get('HTTP_X_FORWARDED_FOR'):
+            ip = request.META['HTTP_X_FORWARDED_FOR']
+        else:
+            ip = request.META['REMOTE_ADDR']
+        models.Record.objects.create(site_number=ip,idCard=id_number,current_pic=user_obj.stard_pic,is_login=1)
+
+        response = render(request,'exam/face_auth.html')
+        response.set_cookie('id_card', id_number)
+        return response
