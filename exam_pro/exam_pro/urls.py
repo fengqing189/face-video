@@ -19,6 +19,7 @@ from exam.views import login
 from exam.views import save_img
 from exam.views import register
 from exam.views import send_record
+from exam.views import exam_index
 
 
 urlpatterns = [
@@ -27,5 +28,6 @@ urlpatterns = [
     url(r'^login', login.LoginView.as_view()),
     url(r'^img/info', save_img.LoginSaveImg.as_view()),
     url(r'^ai/recard', send_record.SendRecad.as_view()),
+    url(r'^exam/index', exam_index.ExamIndex.as_view()),
 
 ]

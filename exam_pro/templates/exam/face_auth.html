@@ -41,30 +41,49 @@
         canvas.height = '300';
         var ctx = canvas.getContext('2d');
 
+        var count = 0;              //用于登录计数
+
         function paizhao() {
             ctx.drawImage(video_elemwnt,0,0,400,300);  //把当前视频画到canvas画布上
             img = canvas.toDataURL("image/png");   // 这里把视频流转换成，base64位
             console.log(img,'==============img');
+
+
             // 这里把获取到的base64位的信息用ajax发送到后端
             function send_ajax() {
                 console.log('1111111111===ajax');
                 $.ajax({
                     type: 'POST',
-                    url: "http://127.0.0.1:8000/img/info",
+                    url: "http://192.168.1.9:8000/img/info",
                     dataType: 'json',
                     data: {"img_b64": img},
                     success: function (msg) {
-                        console.log(msg);
+                        var ai_result = msg["ai_result"];
+                        console.log(ai_result);
+
+                        if (ai_result == 'success'){
+                            console.log('跳转呀！！！！考试首页');
+                            location.href = '/exam/index'
+
+                        }
+
+                        {#console.log(ai_result);#}
+                        count += 1;
+                        console.log(count);
                     },
                     error: function (err) {
                         console.log(err);
                     }
                 });
             }
-            send_ajax()
+            send_ajax();
+            if (count==9){
+                clearInterval(interval)
+            }
+
         };
 
-        setInterval(paizhao,1000);
+        var interval = setInterval(paizhao,1000);
     })
 
 
